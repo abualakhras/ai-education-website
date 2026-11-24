@@ -1,521 +1,1166 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Synapse — AI Learning Studio</title>
-<meta name="description" content="Synapse is an independent studio teaching artificial intelligence, from first principles to frontier models.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add('js')</script>
-<style>
-  :root {
-    --bg: #F5F4F0;
-    --fg: #0E0E0E;
-    --muted: #6B6A66;
-    --line: rgba(14,14,14,.14);
-    --card: #E9E7E1;
-    --accent: #D4FF3A;
-    --inv-bg: #0E0E0E;
-    --inv-fg: #F5F4F0;
-    --sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --gutter: clamp(16px, 4vw, 56px);
-    --max: 1440px;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0F0F0E;
-      --fg: #EDEBE6;
-      --muted: #8E8C86;
-      --line: rgba(237,235,230,.14);
-      --card: #1A1A19;
-      --inv-bg: #EDEBE6;
-      --inv-fg: #0F0F0E;
-      color-scheme: dark;
-    }
-  }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Synapse — AI Learning Studio</title>
+    <meta
+      name="description"
+      content="Synapse is an independent studio teaching artificial intelligence, from first principles to frontier models."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <style>
+      :root {
+        --bg: #f5f4f0;
+        --fg: #0e0e0e;
+        --muted: #6b6a66;
+        --line: rgba(14, 14, 14, 0.14);
+        --card: #e9e7e1;
+        --accent: #d4ff3a;
+        --inv-bg: #0e0e0e;
+        --inv-fg: #f5f4f0;
+        --sans:
+          "Inter Tight", ui-sans-serif, system-ui, -apple-system,
+          "Helvetica Neue", Arial, sans-serif;
+        --mono:
+          "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+        --gutter: clamp(16px, 4vw, 56px);
+        --max: 1440px;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f0f0e;
+          --fg: #edebe6;
+          --muted: #8e8c86;
+          --line: rgba(237, 235, 230, 0.14);
+          --card: #1a1a19;
+          --inv-bg: #edebe6;
+          --inv-fg: #0f0f0e;
+          color-scheme: dark;
+        }
+      }
 
-  *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-  img { display: block; max-width: 100%; }
-  a { color: inherit; text-decoration: none; }
-  ::selection { background: var(--accent); color: #0E0E0E; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ::selection {
+        background: var(--accent);
+        color: #0e0e0e;
+      }
 
-  .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
-  .label {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding-inline: var(--gutter);
+      }
+      .label {
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .rule {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 0;
+      }
 
-  /* ---------- Nav ---------- */
-  .nav {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav .wrap {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 68px; gap: 24px;
-  }
-  .logo { font-weight: 600; font-size: 18px; letter-spacing: -.02em; display: flex; align-items: center; gap: 10px; }
-  .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--fg); }
-  .nav-links { display: flex; gap: 36px; font-size: 15px; }
-  .nav-links a { position: relative; }
-  .nav-links a::after {
-    content: ""; position: absolute; left: 0; bottom: -3px; height: 1px; width: 100%;
-    background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s ease;
-  }
-  .nav-links a:hover::after { transform: scaleX(1); }
+      /* ---------- Nav ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: color-mix(in srgb, var(--bg) 85%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 68px;
+        gap: 24px;
+      }
+      .logo {
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 1px var(--fg);
+      }
+      .nav-links {
+        display: flex;
+        gap: 36px;
+        font-size: 15px;
+      }
+      .nav-links a {
+        position: relative;
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        height: 1px;
+        width: 100%;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s ease;
+      }
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+      }
 
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    height: 46px; padding: 0 22px; border-radius: 999px;
-    font: 500 15px/1 var(--sans);
-    border: 1px solid var(--fg); background: var(--fg); color: var(--bg);
-    cursor: pointer; transition: background .25s, color .25s, transform .25s;
-  }
-  .btn:hover { background: var(--accent); color: #0E0E0E; border-color: var(--accent); }
-  .btn.ghost { background: transparent; color: var(--fg); }
-  .btn.ghost:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-  .btn .arr { transition: transform .25s; }
-  .btn:hover .arr { transform: translateX(3px); }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        height: 46px;
+        padding: 0 22px;
+        border-radius: 999px;
+        font: 500 15px/1 var(--sans);
+        border: 1px solid var(--fg);
+        background: var(--fg);
+        color: var(--bg);
+        cursor: pointer;
+        transition:
+          background 0.25s,
+          color 0.25s,
+          transform 0.25s;
+      }
+      .btn:hover {
+        background: var(--accent);
+        color: #0e0e0e;
+        border-color: var(--accent);
+      }
+      .btn.ghost {
+        background: transparent;
+        color: var(--fg);
+      }
+      .btn.ghost:hover {
+        background: var(--fg);
+        color: var(--bg);
+        border-color: var(--fg);
+      }
+      .btn .arr {
+        transition: transform 0.25s;
+      }
+      .btn:hover .arr {
+        transform: translateX(3px);
+      }
 
-  .burger { display: none; background: none; border: 0; padding: 8px; cursor: pointer; color: var(--fg); }
-  .burger span { display: block; width: 22px; height: 1.5px; background: currentColor; margin: 5px 0; transition: transform .3s; }
-  .nav.open .burger span:first-child { transform: translateY(3.25px) rotate(45deg); }
-  .nav.open .burger span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+      .burger {
+        display: none;
+        background: none;
+        border: 0;
+        padding: 8px;
+        cursor: pointer;
+        color: var(--fg);
+      }
+      .burger span {
+        display: block;
+        width: 22px;
+        height: 1.5px;
+        background: currentColor;
+        margin: 5px 0;
+        transition: transform 0.3s;
+      }
+      .nav.open .burger span:first-child {
+        transform: translateY(3.25px) rotate(45deg);
+      }
+      .nav.open .burger span:last-child {
+        transform: translateY(-3.25px) rotate(-45deg);
+      }
 
-  /* ---------- Hero ---------- */
-  .hero { padding-block: clamp(56px, 10vw, 140px) 0; }
-  .hero-top { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
-  .display {
-    font-weight: 500;
-    font-size: clamp(48px, 9.5vw, 156px);
-    line-height: .92;
-    letter-spacing: -.055em;
-    margin: 0;
-  }
-  .display em { font-style: normal; color: var(--muted); }
-  .hero-foot {
-    display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px;
-    margin-top: clamp(40px, 6vw, 80px); align-items: end;
-  }
-  .hero-foot p { grid-column: 1 / span 5; margin: 0; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.4; letter-spacing: -.01em; }
-  .hero-foot .ctas { grid-column: 9 / -1; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+      /* ---------- Hero ---------- */
+      .hero {
+        padding-block: clamp(56px, 10vw, 140px) 0;
+      }
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+      .display {
+        font-weight: 500;
+        font-size: clamp(48px, 9.5vw, 156px);
+        line-height: 0.92;
+        letter-spacing: -0.055em;
+        margin: 0;
+      }
+      .display em {
+        font-style: normal;
+        color: var(--muted);
+      }
+      .hero-foot {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+        margin-top: clamp(40px, 6vw, 80px);
+        align-items: end;
+      }
+      .hero-foot p {
+        grid-column: 1 / span 5;
+        margin: 0;
+        font-size: clamp(18px, 1.6vw, 22px);
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+      }
+      .hero-foot .ctas {
+        grid-column: 9 / -1;
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
 
-  .media { position: relative; overflow: hidden; background: var(--card); }
-  .media img {
-    width: 100%; height: 100%; object-fit: cover;
-    filter: grayscale(1) contrast(1.05);
-    transform: scale(1.02);
-    transition: filter .8s ease, transform 1.2s cubic-bezier(.2,.7,.2,1);
-  }
-  .media:hover img { filter: grayscale(0); transform: scale(1.06); }
-  .hero-media { margin-top: clamp(40px, 6vw, 72px); aspect-ratio: 21 / 9; border-radius: 4px; }
-  .hero-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-block: 18px; }
+      .media {
+        position: relative;
+        overflow: hidden;
+        background: var(--card);
+      }
+      .media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(1) contrast(1.05);
+        transform: scale(1.02);
+        transition:
+          filter 0.8s ease,
+          transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .media:hover img {
+        filter: grayscale(0);
+        transform: scale(1.06);
+      }
+      .hero-media {
+        margin-top: clamp(40px, 6vw, 72px);
+        aspect-ratio: 21 / 9;
+        border-radius: 4px;
+      }
+      .hero-meta {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-block: 18px;
+      }
 
-  /* ---------- Marquee ---------- */
-  .marquee { border-block: 1px solid var(--line); overflow: hidden; padding-block: 22px; }
-  .marquee-track { display: flex; width: max-content; animation: scroll 38s linear infinite; }
-  .marquee-track span {
-    font-size: clamp(22px, 2.6vw, 36px); letter-spacing: -.03em; font-weight: 400;
-    padding-right: 48px; white-space: nowrap; display: inline-flex; align-items: center; gap: 48px;
-  }
-  .marquee-track span::after { content: "✳"; font-size: .6em; color: var(--muted); }
-  @keyframes scroll { to { transform: translateX(-50%); } }
+      /* ---------- Marquee ---------- */
+      .marquee {
+        border-block: 1px solid var(--line);
+        overflow: hidden;
+        padding-block: 22px;
+      }
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: scroll 38s linear infinite;
+      }
+      .marquee-track span {
+        font-size: clamp(22px, 2.6vw, 36px);
+        letter-spacing: -0.03em;
+        font-weight: 400;
+        padding-right: 48px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .marquee-track span::after {
+        content: "✳";
+        font-size: 0.6em;
+        color: var(--muted);
+      }
+      @keyframes scroll {
+        to {
+          transform: translateX(-50%);
+        }
+      }
 
-  /* ---------- Sections ---------- */
-  section.block { padding-block: clamp(80px, 11vw, 160px); }
-  .sec-head {
-    display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px;
-    padding-top: 20px; border-top: 1px solid var(--line);
-    margin-bottom: clamp(40px, 6vw, 80px);
-  }
-  .sec-head .label { grid-column: 1 / span 3; }
-  .sec-head h2 {
-    grid-column: 4 / span 7; margin: 0;
-    font-weight: 500; font-size: clamp(32px, 4.6vw, 68px); line-height: 1; letter-spacing: -.045em;
-  }
-  .sec-head .more { grid-column: 11 / -1; justify-self: end; align-self: end; font-size: 15px; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+      /* ---------- Sections ---------- */
+      section.block {
+        padding-block: clamp(80px, 11vw, 160px);
+      }
+      .sec-head {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        margin-bottom: clamp(40px, 6vw, 80px);
+      }
+      .sec-head .label {
+        grid-column: 1 / span 3;
+      }
+      .sec-head h2 {
+        grid-column: 4 / span 7;
+        margin: 0;
+        font-weight: 500;
+        font-size: clamp(32px, 4.6vw, 68px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+      .sec-head .more {
+        grid-column: 11 / -1;
+        justify-self: end;
+        align-self: end;
+        font-size: 15px;
+        border-bottom: 1px solid currentColor;
+        padding-bottom: 2px;
+      }
 
-  /* Courses */
-  .courses { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 28px); }
-  .course { display: flex; flex-direction: column; gap: 18px; }
-  .course .media { aspect-ratio: 4 / 5; border-radius: 4px; }
-  .course .tag {
-    position: absolute; top: 14px; left: 14px; z-index: 1;
-    background: var(--bg); color: var(--fg);
-    font: 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .04em;
-    padding: 8px 10px; border-radius: 999px;
-  }
-  .course-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-  .course h3 { margin: 0 0 6px; font-weight: 500; font-size: clamp(20px, 1.8vw, 26px); letter-spacing: -.025em; line-height: 1.15; }
-  .circle {
-    flex: none; width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid var(--line); display: grid; place-items: center;
-    transition: background .25s, border-color .25s, transform .3s;
-  }
-  .course:hover .circle { background: var(--accent); border-color: var(--accent); color: #0E0E0E; transform: rotate(-45deg); }
+      /* Courses */
+      .courses {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(16px, 2vw, 28px);
+      }
+      .course {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .course .media {
+        aspect-ratio: 4 / 5;
+        border-radius: 4px;
+      }
+      .course .tag {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        z-index: 1;
+        background: var(--bg);
+        color: var(--fg);
+        font: 12px/1 var(--mono);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 8px 10px;
+        border-radius: 999px;
+      }
+      .course-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .course h3 {
+        margin: 0 0 6px;
+        font-weight: 500;
+        font-size: clamp(20px, 1.8vw, 26px);
+        letter-spacing: -0.025em;
+        line-height: 1.15;
+      }
+      .circle {
+        flex: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        transition:
+          background 0.25s,
+          border-color 0.25s,
+          transform 0.3s;
+      }
+      .course:hover .circle {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0e0e0e;
+        transform: rotate(-45deg);
+      }
 
-  /* Method */
-  .method { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
-  .method-aside { grid-column: 1 / span 5; }
-  .method-aside .sticky { position: sticky; top: 110px; }
-  .method-aside h2 { margin: 16px 0 24px; font-weight: 500; font-size: clamp(32px, 4.6vw, 68px); line-height: 1; letter-spacing: -.045em; }
-  .method-aside p { color: var(--muted); max-width: 38ch; margin: 0; font-size: 17px; }
-  .steps { grid-column: 7 / -1; list-style: none; margin: 0; padding: 0; }
-  .step { display: grid; grid-template-columns: 72px 1fr; gap: 16px; padding-block: 36px; border-top: 1px solid var(--line); }
-  .step:last-child { border-bottom: 1px solid var(--line); }
-  .step h3 { margin: 0 0 10px; font-weight: 500; font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -.035em; }
-  .step p { margin: 0; color: var(--muted); max-width: 46ch; }
+      /* Method */
+      .method {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+      }
+      .method-aside {
+        grid-column: 1 / span 5;
+      }
+      .method-aside .sticky {
+        position: sticky;
+        top: 110px;
+      }
+      .method-aside h2 {
+        margin: 16px 0 24px;
+        font-weight: 500;
+        font-size: clamp(32px, 4.6vw, 68px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+      }
+      .method-aside p {
+        color: var(--muted);
+        max-width: 38ch;
+        margin: 0;
+        font-size: 17px;
+      }
+      .steps {
+        grid-column: 7 / -1;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .step {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 16px;
+        padding-block: 36px;
+        border-top: 1px solid var(--line);
+      }
+      .step:last-child {
+        border-bottom: 1px solid var(--line);
+      }
+      .step h3 {
+        margin: 0 0 10px;
+        font-weight: 500;
+        font-size: clamp(24px, 2.4vw, 34px);
+        letter-spacing: -0.035em;
+      }
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 46ch;
+      }
 
-  /* Stats */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid var(--line); }
-  .stat { padding: clamp(32px, 4vw, 56px) clamp(0px, 2vw, 32px); }
-  .stat + .stat { border-left: 1px solid var(--line); }
-  .stat:first-child { padding-left: 0; }
-  .stat b { display: block; font-weight: 500; font-size: clamp(56px, 7vw, 112px); letter-spacing: -.06em; line-height: 1; margin-bottom: 14px; }
-  .stat b sup { font-size: .4em; vertical-align: top; position: relative; top: .3em; color: var(--muted); }
+      /* Stats */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-block: 1px solid var(--line);
+      }
+      .stat {
+        padding: clamp(32px, 4vw, 56px) clamp(0px, 2vw, 32px);
+      }
+      .stat + .stat {
+        border-left: 1px solid var(--line);
+      }
+      .stat:first-child {
+        padding-left: 0;
+      }
+      .stat b {
+        display: block;
+        font-weight: 500;
+        font-size: clamp(56px, 7vw, 112px);
+        letter-spacing: -0.06em;
+        line-height: 1;
+        margin-bottom: 14px;
+      }
+      .stat b sup {
+        font-size: 0.4em;
+        vertical-align: top;
+        position: relative;
+        top: 0.3em;
+        color: var(--muted);
+      }
 
-  /* Journal */
-  .journal { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(16px, 3vw, 40px); align-items: start; }
-  .post { display: flex; flex-direction: column; gap: 18px; }
-  .post .media { border-radius: 4px; aspect-ratio: 16 / 11; }
-  .post:nth-child(2) .media { aspect-ratio: 4 / 5; }
-  .post h3 { margin: 0; font-weight: 500; font-size: clamp(22px, 2.2vw, 32px); letter-spacing: -.03em; line-height: 1.12; max-width: 24ch; }
-  .post .meta { display: flex; gap: 16px; }
+      /* Journal */
+      .journal {
+        display: grid;
+        grid-template-columns: 7fr 5fr;
+        gap: clamp(16px, 3vw, 40px);
+        align-items: start;
+      }
+      .post {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .post .media {
+        border-radius: 4px;
+        aspect-ratio: 16 / 11;
+      }
+      .post:nth-child(2) .media {
+        aspect-ratio: 4 / 5;
+      }
+      .post h3 {
+        margin: 0;
+        font-weight: 500;
+        font-size: clamp(22px, 2.2vw, 32px);
+        letter-spacing: -0.03em;
+        line-height: 1.12;
+        max-width: 24ch;
+      }
+      .post .meta {
+        display: flex;
+        gap: 16px;
+      }
 
-  /* CTA */
-  .cta { background: var(--inv-bg); color: var(--inv-fg); padding-block: clamp(80px, 12vw, 180px); }
-  .cta .label { color: color-mix(in srgb, var(--inv-fg) 55%, transparent); }
-  .cta h2 { margin: 20px 0 48px; font-weight: 500; font-size: clamp(48px, 9vw, 148px); letter-spacing: -.055em; line-height: .92; }
-  .cta h2 span { color: var(--accent); }
-  .signup { display: flex; gap: 12px; max-width: 560px; flex-wrap: wrap; }
-  .signup input {
-    flex: 1 1 240px; height: 54px; padding: 0 22px; border-radius: 999px;
-    background: transparent; color: var(--inv-fg);
-    border: 1px solid color-mix(in srgb, var(--inv-fg) 30%, transparent);
-    font: 16px var(--sans); outline: none; transition: border-color .2s;
-  }
-  .signup input::placeholder { color: color-mix(in srgb, var(--inv-fg) 50%, transparent); }
-  .signup input:focus { border-color: var(--accent); }
-  .signup .btn { height: 54px; background: var(--accent); color: #0E0E0E; border-color: var(--accent); }
-  .signup .btn:hover { background: var(--inv-fg); color: var(--inv-bg); border-color: var(--inv-fg); }
-  .thanks { font-size: 20px; letter-spacing: -.01em; }
-  .thanks::before { content: "✳ "; color: var(--accent); }
+      /* CTA */
+      .cta {
+        background: var(--inv-bg);
+        color: var(--inv-fg);
+        padding-block: clamp(80px, 12vw, 180px);
+      }
+      .cta .label {
+        color: color-mix(in srgb, var(--inv-fg) 55%, transparent);
+      }
+      .cta h2 {
+        margin: 20px 0 48px;
+        font-weight: 500;
+        font-size: clamp(48px, 9vw, 148px);
+        letter-spacing: -0.055em;
+        line-height: 0.92;
+      }
+      .cta h2 span {
+        color: var(--accent);
+      }
+      .signup {
+        display: flex;
+        gap: 12px;
+        max-width: 560px;
+        flex-wrap: wrap;
+      }
+      .signup input {
+        flex: 1 1 240px;
+        height: 54px;
+        padding: 0 22px;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--inv-fg);
+        border: 1px solid color-mix(in srgb, var(--inv-fg) 30%, transparent);
+        font: 16px var(--sans);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .signup input::placeholder {
+        color: color-mix(in srgb, var(--inv-fg) 50%, transparent);
+      }
+      .signup input:focus {
+        border-color: var(--accent);
+      }
+      .signup .btn {
+        height: 54px;
+        background: var(--accent);
+        color: #0e0e0e;
+        border-color: var(--accent);
+      }
+      .signup .btn:hover {
+        background: var(--inv-fg);
+        color: var(--inv-bg);
+        border-color: var(--inv-fg);
+      }
+      .thanks {
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      .thanks::before {
+        content: "✳ ";
+        color: var(--accent);
+      }
 
-  /* Footer */
-  footer { padding-block: clamp(56px, 8vw, 100px) 28px; }
-  .foot-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: clamp(56px, 8vw, 120px); }
-  .foot-grid > div:first-child { grid-column: 1 / span 5; }
-  .foot-grid > div:first-child p { margin: 12px 0 0; color: var(--muted); max-width: 34ch; }
-  .foot-col { grid-column: span 2; display: flex; flex-direction: column; gap: 10px; }
-  .foot-col .label { margin-bottom: 6px; }
-  .foot-col a { width: fit-content; }
-  .foot-col a:hover { color: var(--muted); }
-  .wordmark {
-    font-weight: 600; font-size: clamp(72px, 21vw, 340px);
-    letter-spacing: -.07em; line-height: .78; margin: 0 0 28px -.04em;
-    white-space: nowrap;
-  }
-  .foot-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+      /* Footer */
+      footer {
+        padding-block: clamp(56px, 8vw, 100px) 28px;
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+        margin-bottom: clamp(56px, 8vw, 120px);
+      }
+      .foot-grid > div:first-child {
+        grid-column: 1 / span 5;
+      }
+      .foot-grid > div:first-child p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        max-width: 34ch;
+      }
+      .foot-col {
+        grid-column: span 2;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .foot-col .label {
+        margin-bottom: 6px;
+      }
+      .foot-col a {
+        width: fit-content;
+      }
+      .foot-col a:hover {
+        color: var(--muted);
+      }
+      .wordmark {
+        font-weight: 600;
+        font-size: clamp(72px, 21vw, 340px);
+        letter-spacing: -0.07em;
+        line-height: 0.78;
+        margin: 0 0 28px -0.04em;
+        white-space: nowrap;
+      }
+      .foot-bottom {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+      }
 
-  /* Reveal */
-  .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
-  .js .reveal.in { opacity: 1; transform: none; }
-  .js .reveal.d1 { transition-delay: .1s; }
-  .js .reveal.d2 { transition-delay: .2s; }
+      /* Reveal */
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+          transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .js .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+      .js .reveal.d1 {
+        transition-delay: 0.1s;
+      }
+      .js .reveal.d2 {
+        transition-delay: 0.2s;
+      }
 
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .marquee-track { animation: none; }
-    .js .reveal { opacity: 1; transform: none; transition: none; }
-    .media img { transition: none; }
-  }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .marquee-track {
+          animation: none;
+        }
+        .js .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .media img {
+          transition: none;
+        }
+      }
 
-  /* ---------- Responsive ---------- */
-  @media (max-width: 960px) {
-    .courses { grid-template-columns: 1fr 1fr; }
-    .courses .course:last-child { grid-column: 1 / -1; }
-    .courses .course:last-child .media { aspect-ratio: 16 / 9; }
-    .hero-foot p { grid-column: 1 / span 7; }
-    .hero-foot .ctas { grid-column: 8 / -1; }
-  }
-  @media (max-width: 760px) {
-    .nav-links, .nav .wrap > .btn { display: none; }
-    .burger { display: block; }
-    .nav.open .nav-links {
-      display: flex; flex-direction: column; gap: 0;
-      position: absolute; top: 68px; left: 0; right: 0;
-      background: var(--bg); border-bottom: 1px solid var(--line);
-      padding: 8px var(--gutter) 24px;
-    }
-    .nav.open .nav-links a { padding-block: 14px; font-size: 22px; letter-spacing: -.02em; border-bottom: 1px solid var(--line); }
-    .nav.open .nav-links a::after { display: none; }
+      /* ---------- Responsive ---------- */
+      @media (max-width: 960px) {
+        .courses {
+          grid-template-columns: 1fr 1fr;
+        }
+        .courses .course:last-child {
+          grid-column: 1 / -1;
+        }
+        .courses .course:last-child .media {
+          aspect-ratio: 16 / 9;
+        }
+        .hero-foot p {
+          grid-column: 1 / span 7;
+        }
+        .hero-foot .ctas {
+          grid-column: 8 / -1;
+        }
+      }
+      @media (max-width: 760px) {
+        .nav-links,
+        .nav .wrap > .btn {
+          display: none;
+        }
+        .burger {
+          display: block;
+        }
+        .nav.open .nav-links {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          position: absolute;
+          top: 68px;
+          left: 0;
+          right: 0;
+          background: var(--bg);
+          border-bottom: 1px solid var(--line);
+          padding: 8px var(--gutter) 24px;
+        }
+        .nav.open .nav-links a {
+          padding-block: 14px;
+          font-size: 22px;
+          letter-spacing: -0.02em;
+          border-bottom: 1px solid var(--line);
+        }
+        .nav.open .nav-links a::after {
+          display: none;
+        }
 
-    .hero-foot, .sec-head, .method, .foot-grid { grid-template-columns: 1fr; }
-    .hero-foot p, .hero-foot .ctas, .sec-head .label, .sec-head h2, .sec-head .more,
-    .method-aside, .steps, .foot-grid > div:first-child, .foot-col { grid-column: 1 / -1; }
-    .hero-foot .ctas { justify-content: flex-start; }
-    .sec-head .more { justify-self: start; }
-    .hero-media { aspect-ratio: 4 / 3; }
-    .method-aside .sticky { position: static; margin-bottom: 24px; }
-    .step { grid-template-columns: 48px 1fr; padding-block: 28px; }
+        .hero-foot,
+        .sec-head,
+        .method,
+        .foot-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-foot p,
+        .hero-foot .ctas,
+        .sec-head .label,
+        .sec-head h2,
+        .sec-head .more,
+        .method-aside,
+        .steps,
+        .foot-grid > div:first-child,
+        .foot-col {
+          grid-column: 1 / -1;
+        }
+        .hero-foot .ctas {
+          justify-content: flex-start;
+        }
+        .sec-head .more {
+          justify-self: start;
+        }
+        .hero-media {
+          aspect-ratio: 4 / 3;
+        }
+        .method-aside .sticky {
+          position: static;
+          margin-bottom: 24px;
+        }
+        .step {
+          grid-template-columns: 48px 1fr;
+          padding-block: 28px;
+        }
 
-    .courses, .journal { grid-template-columns: 1fr; }
-    .courses .course:last-child .media, .course .media { aspect-ratio: 4 / 3; }
-    .post:nth-child(2) .media { aspect-ratio: 16 / 11; }
+        .courses,
+        .journal {
+          grid-template-columns: 1fr;
+        }
+        .courses .course:last-child .media,
+        .course .media {
+          aspect-ratio: 4 / 3;
+        }
+        .post:nth-child(2) .media {
+          aspect-ratio: 16 / 11;
+        }
 
-    .stats { grid-template-columns: 1fr; }
-    .stat { padding-inline: 0; }
-    .stat + .stat { border-left: 0; border-top: 1px solid var(--line); }
+        .stats {
+          grid-template-columns: 1fr;
+        }
+        .stat {
+          padding-inline: 0;
+        }
+        .stat + .stat {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
 
-    .foot-grid { grid-template-columns: 1fr 1fr; }
-    .foot-grid > div:first-child { grid-column: 1 / -1; }
-    .foot-col { grid-column: span 1; }
-  }
-</style>
-</head>
-<body>
-
-<header class="nav" id="nav">
-  <div class="wrap">
-    <a href="#" class="logo" aria-label="Synapse home"><span class="logo-dot"></span>Synapse</a>
-    <nav class="nav-links" id="navLinks">
-      <a href="#courses">Courses</a>
-      <a href="#method">Method</a>
-      <a href="#journal">Journal</a>
-    </nav>
-    <a href="#join" class="btn">Enroll <span class="arr">→</span></a>
-    <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
-  </div>
-</header>
-
-<main>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="wrap">
-      <div class="hero-top reveal">
-        <span class="label">(AI Learning Studio)</span>
-        <span class="label">Index — 2026</span>
+        .foot-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .foot-grid > div:first-child {
+          grid-column: 1 / -1;
+        }
+        .foot-col {
+          grid-column: span 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="wrap">
+        <a href="#" class="logo" aria-label="Synapse home"
+          ><span class="logo-dot"></span>Synapse</a
+        >
+        <nav class="nav-links" id="navLinks">
+          <a href="#courses">Courses</a>
+          <a href="#method">Method</a>
+          <a href="#journal">Journal</a>
+        </nav>
+        <a href="#join" class="btn">Enroll <span class="arr">→</span></a>
+        <button
+          class="burger"
+          id="burger"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+          aria-controls="navLinks"
+        >
+          <span></span><span></span>
+        </button>
       </div>
-      <h1 class="display reveal">Learn the machines<br><em>shaping tomorrow.</em></h1>
-      <div class="hero-foot">
-        <p class="reveal d1">An independent school for artificial intelligence. Rigorous ideas, clear explanations, and hands-on projects, from first principles to frontier models.</p>
-        <div class="ctas reveal d2">
-          <a href="#courses" class="btn">Explore courses <span class="arr">→</span></a>
-          <a href="#method" class="btn ghost">Our method</a>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-top reveal">
+            <span class="label">(AI Learning Studio)</span>
+            <span class="label">Index — 2026</span>
+          </div>
+          <h1 class="display reveal">
+            Learn the machines<br /><em>shaping tomorrow.</em>
+          </h1>
+          <div class="hero-foot">
+            <p class="reveal d1">
+              An independent school for artificial intelligence. Rigorous ideas,
+              clear explanations, and hands-on projects, from first principles
+              to frontier models.
+            </p>
+            <div class="ctas reveal d2">
+              <a href="#courses" class="btn"
+                >Explore courses <span class="arr">→</span></a
+              >
+              <a href="#method" class="btn ghost">Our method</a>
+            </div>
+          </div>
+          <div class="media hero-media reveal">
+            <img
+              src="https://picsum.photos/seed/synapse-hero/2000/860"
+              alt="Placeholder hero image"
+              width="2000"
+              height="860"
+            />
+          </div>
+          <div class="hero-meta">
+            <span class="label">Est. 2026</span>
+            <span class="label">12k+ learners</span>
+            <span class="label">Self-paced · Remote</span>
+            <span class="label">↓ Scroll</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Marquee -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Machine Learning</span><span>Neural Networks</span
+          ><span>Large Language Models</span><span>AI Ethics</span
+          ><span>Computer Vision</span><span>Reinforcement Learning</span>
+          <span>Machine Learning</span><span>Neural Networks</span
+          ><span>Large Language Models</span><span>AI Ethics</span
+          ><span>Computer Vision</span><span>Reinforcement Learning</span>
         </div>
       </div>
-      <div class="media hero-media reveal">
-        <img src="https://picsum.photos/seed/synapse-hero/2000/860" alt="Placeholder hero image" width="2000" height="860">
-      </div>
-      <div class="hero-meta">
-        <span class="label">Est. 2026</span>
-        <span class="label">12k+ learners</span>
-        <span class="label">Self-paced · Remote</span>
-        <span class="label">↓ Scroll</span>
-      </div>
-    </div>
-  </section>
 
-  <!-- Marquee -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Machine Learning</span><span>Neural Networks</span><span>Large Language Models</span><span>AI Ethics</span><span>Computer Vision</span><span>Reinforcement Learning</span>
-      <span>Machine Learning</span><span>Neural Networks</span><span>Large Language Models</span><span>AI Ethics</span><span>Computer Vision</span><span>Reinforcement Learning</span>
-    </div>
-  </div>
+      <!-- Courses -->
+      <section class="block" id="courses">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <span class="label">01 — Courses</span>
+            <h2>Three paths into intelligence.</h2>
+            <a href="#" class="more">All courses</a>
+          </div>
+          <div class="courses">
+            <a href="#" class="course reveal">
+              <div class="media">
+                <span class="tag">Beginner</span
+                ><img
+                  src="https://picsum.photos/seed/synapse-c1/800/1000"
+                  alt="Placeholder course image"
+                  loading="lazy"
+                  width="800"
+                  height="1000"
+                />
+              </div>
+              <div class="course-row">
+                <div>
+                  <h3>Foundations of Machine Learning</h3>
+                  <span class="label">6 weeks · 24 lessons</span>
+                </div>
+                <span class="circle">→</span>
+              </div>
+            </a>
+            <a href="#" class="course reveal d1">
+              <div class="media">
+                <span class="tag">Intermediate</span
+                ><img
+                  src="https://picsum.photos/seed/synapse-c2/800/1000"
+                  alt="Placeholder course image"
+                  loading="lazy"
+                  width="800"
+                  height="1000"
+                />
+              </div>
+              <div class="course-row">
+                <div>
+                  <h3>Deep Learning &amp; Neural Networks</h3>
+                  <span class="label">8 weeks · 32 lessons</span>
+                </div>
+                <span class="circle">→</span>
+              </div>
+            </a>
+            <a href="#" class="course reveal d2">
+              <div class="media">
+                <span class="tag">Advanced</span
+                ><img
+                  src="https://picsum.photos/seed/synapse-c3/800/1000"
+                  alt="Placeholder course image"
+                  loading="lazy"
+                  width="800"
+                  height="1000"
+                />
+              </div>
+              <div class="course-row">
+                <div>
+                  <h3>Building with Language Models</h3>
+                  <span class="label">5 weeks · 20 lessons</span>
+                </div>
+                <span class="circle">→</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
 
-  <!-- Courses -->
-  <section class="block" id="courses">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="label">01 — Courses</span>
-        <h2>Three paths into intelligence.</h2>
-        <a href="#" class="more">All courses</a>
-      </div>
-      <div class="courses">
-        <a href="#" class="course reveal">
-          <div class="media"><span class="tag">Beginner</span><img src="https://picsum.photos/seed/synapse-c1/800/1000" alt="Placeholder course image" loading="lazy" width="800" height="1000"></div>
-          <div class="course-row">
-            <div><h3>Foundations of Machine Learning</h3><span class="label">6 weeks · 24 lessons</span></div>
-            <span class="circle">→</span>
+      <!-- Method -->
+      <section class="block" id="method" style="padding-top: 0">
+        <div class="wrap method">
+          <div class="method-aside">
+            <div class="sticky reveal">
+              <span class="label">02 — Method</span>
+              <h2>Understand deeply. Build daily.</h2>
+              <p>
+                We believe AI is learned by doing. Every concept is paired with
+                a small, real project, so understanding becomes intuition.
+              </p>
+            </div>
           </div>
-        </a>
-        <a href="#" class="course reveal d1">
-          <div class="media"><span class="tag">Intermediate</span><img src="https://picsum.photos/seed/synapse-c2/800/1000" alt="Placeholder course image" loading="lazy" width="800" height="1000"></div>
-          <div class="course-row">
-            <div><h3>Deep Learning &amp; Neural Networks</h3><span class="label">8 weeks · 32 lessons</span></div>
-            <span class="circle">→</span>
-          </div>
-        </a>
-        <a href="#" class="course reveal d2">
-          <div class="media"><span class="tag">Advanced</span><img src="https://picsum.photos/seed/synapse-c3/800/1000" alt="Placeholder course image" loading="lazy" width="800" height="1000"></div>
-          <div class="course-row">
-            <div><h3>Building with Language Models</h3><span class="label">5 weeks · 20 lessons</span></div>
-            <span class="circle">→</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
+          <ol class="steps">
+            <li class="step reveal">
+              <span class="label">(01)</span>
+              <div>
+                <h3>Understand</h3>
+                <p>
+                  Short, visual lessons that explain the why behind every
+                  algorithm, without the jargon.
+                </p>
+              </div>
+            </li>
+            <li class="step reveal">
+              <span class="label">(02)</span>
+              <div>
+                <h3>Build</h3>
+                <p>
+                  Guided notebooks and weekly projects. Train a model, ship a
+                  tool, break things on purpose.
+                </p>
+              </div>
+            </li>
+            <li class="step reveal">
+              <span class="label">(03)</span>
+              <div>
+                <h3>Reflect</h3>
+                <p>
+                  Peer critique and mentor reviews that cover the ethics,
+                  limits, and impact of what you make.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-  <!-- Method -->
-  <section class="block" id="method" style="padding-top:0">
-    <div class="wrap method">
-      <div class="method-aside">
-        <div class="sticky reveal">
-          <span class="label">02 — Method</span>
-          <h2>Understand deeply. Build daily.</h2>
-          <p>We believe AI is learned by doing. Every concept is paired with a small, real project, so understanding becomes intuition.</p>
+      <!-- Stats -->
+      <div class="wrap">
+        <div class="stats reveal">
+          <div class="stat">
+            <b>12k<sup>+</sup></b
+            ><span class="label">Active learners</span>
+          </div>
+          <div class="stat">
+            <b>76</b><span class="label">Hands-on lessons</span>
+          </div>
+          <div class="stat">
+            <b>94<sup>%</sup></b
+            ><span class="label">Completion rate</span>
+          </div>
         </div>
       </div>
-      <ol class="steps">
-        <li class="step reveal">
-          <span class="label">(01)</span>
-          <div><h3>Understand</h3><p>Short, visual lessons that explain the why behind every algorithm, without the jargon.</p></div>
-        </li>
-        <li class="step reveal">
-          <span class="label">(02)</span>
-          <div><h3>Build</h3><p>Guided notebooks and weekly projects. Train a model, ship a tool, break things on purpose.</p></div>
-        </li>
-        <li class="step reveal">
-          <span class="label">(03)</span>
-          <div><h3>Reflect</h3><p>Peer critique and mentor reviews that cover the ethics, limits, and impact of what you make.</p></div>
-        </li>
-      </ol>
-    </div>
-  </section>
 
-  <!-- Stats -->
-  <div class="wrap">
-    <div class="stats reveal">
-      <div class="stat"><b>12k<sup>+</sup></b><span class="label">Active learners</span></div>
-      <div class="stat"><b>76</b><span class="label">Hands-on lessons</span></div>
-      <div class="stat"><b>94<sup>%</sup></b><span class="label">Completion rate</span></div>
-    </div>
-  </div>
+      <!-- Journal -->
+      <section class="block" id="journal">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <span class="label">03 — Journal</span>
+            <h2>Notes from the frontier.</h2>
+            <a href="#" class="more">Read the journal</a>
+          </div>
+          <div class="journal">
+            <a href="#" class="post reveal">
+              <div class="media">
+                <img
+                  src="https://picsum.photos/seed/synapse-j1/1200/825"
+                  alt="Placeholder article image"
+                  loading="lazy"
+                  width="1200"
+                  height="825"
+                />
+              </div>
+              <div class="meta">
+                <span class="label">Essay</span
+                ><span class="label">8 min read</span>
+              </div>
+              <h3>
+                What a neural network actually learns, explained in plain
+                language.
+              </h3>
+            </a>
+            <a href="#" class="post reveal d1">
+              <div class="media">
+                <img
+                  src="https://picsum.photos/seed/synapse-j2/800/1000"
+                  alt="Placeholder article image"
+                  loading="lazy"
+                  width="800"
+                  height="1000"
+                />
+              </div>
+              <div class="meta">
+                <span class="label">Guide</span
+                ><span class="label">5 min read</span>
+              </div>
+              <h3>A calm introduction to prompting and model behavior.</h3>
+            </a>
+          </div>
+        </div>
+      </section>
 
-  <!-- Journal -->
-  <section class="block" id="journal">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="label">03 — Journal</span>
-        <h2>Notes from the frontier.</h2>
-        <a href="#" class="more">Read the journal</a>
+      <!-- CTA -->
+      <section class="cta" id="join">
+        <div class="wrap">
+          <span class="label reveal">(Join the next cohort)</span>
+          <h2 class="reveal">Start learning<br />today <span>→</span></h2>
+          <form class="signup reveal d1" id="signup" novalidate>
+            <input
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              aria-label="Email address"
+              required
+            />
+            <button class="btn" type="submit">Get early access</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="foot-grid">
+          <div>
+            <a href="#" class="logo"><span class="logo-dot"></span>Synapse</a>
+            <p>
+              An independent studio teaching artificial intelligence with
+              clarity and care.
+            </p>
+          </div>
+          <div class="foot-col">
+            <span class="label">Learn</span>
+            <a href="#courses">Courses</a><a href="#method">Method</a
+            ><a href="#journal">Journal</a>
+          </div>
+          <div class="foot-col">
+            <span class="label">Studio</span>
+            <a href="#">About</a><a href="#">Mentors</a><a href="#">Careers</a>
+          </div>
+          <div class="foot-col">
+            <span class="label">Social</span>
+            <a href="#">Instagram</a><a href="#">LinkedIn</a
+            ><a href="#">YouTube</a>
+          </div>
+        </div>
+        <div class="wordmark" aria-hidden="true">Synapse</div>
+        <div class="foot-bottom">
+          <span class="label">© 2026 Synapse Studio</span>
+          <span class="label">Made with curiosity</span>
+          <a href="#" class="label">Back to top ↑</a>
+        </div>
       </div>
-      <div class="journal">
-        <a href="#" class="post reveal">
-          <div class="media"><img src="https://picsum.photos/seed/synapse-j1/1200/825" alt="Placeholder article image" loading="lazy" width="1200" height="825"></div>
-          <div class="meta"><span class="label">Essay</span><span class="label">8 min read</span></div>
-          <h3>What a neural network actually learns, explained in plain language.</h3>
-        </a>
-        <a href="#" class="post reveal d1">
-          <div class="media"><img src="https://picsum.photos/seed/synapse-j2/800/1000" alt="Placeholder article image" loading="lazy" width="800" height="1000"></div>
-          <div class="meta"><span class="label">Guide</span><span class="label">5 min read</span></div>
-          <h3>A calm introduction to prompting and model behavior.</h3>
-        </a>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- CTA -->
-  <section class="cta" id="join">
-    <div class="wrap">
-      <span class="label reveal">(Join the next cohort)</span>
-      <h2 class="reveal">Start learning<br>today <span>→</span></h2>
-      <form class="signup reveal d1" id="signup" novalidate>
-        <input type="email" name="email" placeholder="your@email.com" aria-label="Email address" required>
-        <button class="btn" type="submit">Get early access</button>
-      </form>
-    </div>
-  </section>
-</main>
+    <script>
+      // Mobile nav
+      const nav = document.getElementById("nav");
+      const burger = document.getElementById("burger");
+      burger.addEventListener("click", () => {
+        const open = nav.classList.toggle("open");
+        burger.setAttribute("aria-expanded", open);
+      });
+      document.querySelectorAll("#navLinks a").forEach((a) =>
+        a.addEventListener("click", () => {
+          nav.classList.remove("open");
+          burger.setAttribute("aria-expanded", false);
+        }),
+      );
 
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <a href="#" class="logo"><span class="logo-dot"></span>Synapse</a>
-        <p>An independent studio teaching artificial intelligence with clarity and care.</p>
-      </div>
-      <div class="foot-col">
-        <span class="label">Learn</span>
-        <a href="#courses">Courses</a><a href="#method">Method</a><a href="#journal">Journal</a>
-      </div>
-      <div class="foot-col">
-        <span class="label">Studio</span>
-        <a href="#">About</a><a href="#">Mentors</a><a href="#">Careers</a>
-      </div>
-      <div class="foot-col">
-        <span class="label">Social</span>
-        <a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">YouTube</a>
-      </div>
-    </div>
-    <div class="wordmark" aria-hidden="true">Synapse</div>
-    <div class="foot-bottom">
-      <span class="label">© 2026 Synapse Studio</span>
-      <span class="label">Made with curiosity</span>
-      <a href="#" class="label">Back to top ↑</a>
-    </div>
-  </div>
-</footer>
+      // Scroll reveal
+      const items = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+        );
+        items.forEach((el) => io.observe(el));
+      } else {
+        items.forEach((el) => el.classList.add("in"));
+      }
 
-<script>
-  // Mobile nav
-  const nav = document.getElementById('nav');
-  const burger = document.getElementById('burger');
-  burger.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
-    burger.setAttribute('aria-expanded', open);
-  });
-  document.querySelectorAll('#navLinks a').forEach(a =>
-    a.addEventListener('click', () => { nav.classList.remove('open'); burger.setAttribute('aria-expanded', false); })
-  );
-
-  // Scroll reveal
-  const items = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    items.forEach(el => io.observe(el));
-  } else {
-    items.forEach(el => el.classList.add('in'));
-  }
-
-  // Signup
-  const form = document.getElementById('signup');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const input = form.querySelector('input');
-    if (!input.value || !input.checkValidity()) {
-      input.focus();
-      input.style.borderColor = '#ff6b5a';
-      return;
-    }
-    form.outerHTML = '<p class="thanks">Thanks! You’re on the list. We’ll be in touch soon.</p>';
-  });
-</script>
-</body>
+      // Signup
+      const form = document.getElementById("signup");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const input = form.querySelector("input");
+        if (!input.value || !input.checkValidity()) {
+          input.focus();
+          input.style.borderColor = "#ff6b5a";
+          return;
+        }
+        form.outerHTML =
+          '<p class="thanks">Thanks! You’re on the list. We’ll be in touch soon.</p>';
+      });
+    </script>
+  </body>
 </html>
+<!-- Git workflow practice completed -->
